@@ -18,7 +18,7 @@ const App = () => {
           Podcaster
         </Typography>
       </header>
-      <div style={{ margin: "16px" }}>
+      <div style={{ margin: "32px" }}>
         <Router />
       </div>
     </div>

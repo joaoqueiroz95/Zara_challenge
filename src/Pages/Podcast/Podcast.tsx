@@ -3,7 +3,12 @@ import { useEffect, useState } from "react";
 import { Navigate, useNavigate, useParams } from "react-router-dom";
 import EpisodesTable from "/@/Components/EpisodesTable/EpisodesTable";
 import PodcastDetailsCard from "/@/Components/PodcastDetailsCard/PodcastDetailsCard";
-import { getPodcast } from "/@/Services/podcasts";
+import { getPodcast, getPodcasts } from "/@/Services/podcasts";
+import {
+  checkValidLocalStorage,
+  getLocalStorageItem,
+  saveToLocalStorage,
+} from "/@/Utils/localStorage";
 
 const Podcast = () => {
   const { podcastId } = useParams();
@@ -12,39 +17,34 @@ const Podcast = () => {
   const [episodes, setEpisodes] = useState([]);
 
   useEffect(() => {
-    const saved_podcasts = localStorage.getItem("podcasts");
-    if (saved_podcasts === null) {
+    const isValid = checkValidLocalStorage("podcasts");
+
+    let podcasts;
+    if (isValid) {
+      podcasts = getLocalStorageItem("podcasts");
+    } else {
+      getPodcasts().then((pods) => {
+        podcasts = pods;
+        saveToLocalStorage("podcasts", pods);
+      });
+    }
+
+    const podcast = podcasts.find((pod: any) => pod.id === podcastId);
+    if (!podcast) {
       navigate("/");
       return;
     }
-
-    const podcasts = JSON.parse(saved_podcasts).podcasts;
-    const podcast = podcasts.find((pod: any) => pod.id === podcastId);
     setPodcast(podcast);
 
-    const saved_podcast = localStorage.getItem(podcast.id);
+    const isPodcastEpisodesValid = checkValidLocalStorage(podcast.id);
 
-    let diffDays = 0;
-    if (saved_podcast !== null) {
-      const date = new Date(JSON.parse(saved_podcast).date);
-
-      // Calculate the difference in time between the stored date and now
-      const diffTime = Math.abs(Date.now() - date.getTime());
-      diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
-    }
-
-    if (saved_podcast === null || diffDays >= 1) {
-      const currentDate = new Date();
-
-      getPodcast(podcastId as string).then((res) => {
-        setEpisodes(res);
-        localStorage.setItem(
-          podcast.id,
-          JSON.stringify({ date: currentDate.toISOString(), episodes: res })
-        );
-      });
+    if (isPodcastEpisodesValid) {
+      setEpisodes(getLocalStorageItem(podcast.id));
     } else {
-      setEpisodes(JSON.parse(saved_podcast).episodes);
+      getPodcast(podcast.id).then((eps) => {
+        setEpisodes(eps);
+        saveToLocalStorage(podcast.id, eps);
+      });
     }
   }, []);
 
@@ -58,12 +58,14 @@ const Podcast = () => {
           imgSrc={podcast.image}
         />
       )}
-      <div>
-        {/* <Card>
-          <CardContent>
-            <Typography>Episodes: 66</Typography>
-          </CardContent>
-        </Card> */}
+      <div style={{ flex: 1 }}>
+        {episodes.length > 0 && (
+          <Card sx={{ merginBottom: "8px" }}>
+            <CardContent>
+              <Typography>Episodes: {episodes.length}</Typography>
+            </CardContent>
+          </Card>
+        )}
         {episodes.length === 0 && <CircularProgress />}
         {episodes.length > 0 && (
           <Card style={{ maxHeight: "775px", overflowY: "auto" }}>

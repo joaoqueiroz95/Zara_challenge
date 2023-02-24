@@ -2,35 +2,26 @@ import { Chip, TextField } from "@mui/material";
 import { useEffect, useState } from "react";
 import PodcastShortCard from "/@/Components/PodcastShortCard/PodcastShortCard";
 import { getPodcasts } from "/@/Services/podcasts";
+import {
+  checkValidLocalStorage,
+  getLocalStorageItem,
+  saveToLocalStorage,
+} from "/@/Utils/localStorage";
 
 const Home = () => {
   const [podcasts, setPodcasts] = useState([]);
   const [filterVal, setFilterVal] = useState("");
 
   useEffect(() => {
-    const saved_podcasts = localStorage.getItem("podcasts");
+    const isValid = checkValidLocalStorage("podcasts");
 
-    let diffDays = 0;
-    if (saved_podcasts !== null) {
-      const date = new Date(JSON.parse(saved_podcasts).date);
-
-      // Calculate the difference in time between the stored date and now
-      const diffTime = Math.abs(Date.now() - date.getTime());
-      diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
-    }
-
-    if (saved_podcasts === null || diffDays >= 1) {
-      const currentDate = new Date();
-
+    if (isValid) {
+      setPodcasts(getLocalStorageItem("podcasts"));
+    } else {
       getPodcasts().then((podcasts) => {
         setPodcasts(podcasts);
-        localStorage.setItem(
-          "podcasts",
-          JSON.stringify({ date: currentDate.toISOString(), podcasts })
-        );
+        saveToLocalStorage("podcasts", podcasts);
       });
-    } else {
-      setPodcasts(JSON.parse(saved_podcasts).podcasts);
     }
   }, []);
 
@@ -56,7 +47,7 @@ const Home = () => {
             display: "flex",
             alignItems: "center",
             justifyContent: "end",
-            gap: "8px",
+            gap: "16px",
           }}
         >
           <Chip label={filteredPodcasts.length} color="primary" />

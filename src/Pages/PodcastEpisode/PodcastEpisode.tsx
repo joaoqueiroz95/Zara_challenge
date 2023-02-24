@@ -3,7 +3,12 @@ import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import EpisodesTable from "/@/Components/EpisodesTable/EpisodesTable";
 import PodcastDetailsCard from "/@/Components/PodcastDetailsCard/PodcastDetailsCard";
-import { getPodcast } from "/@/Services/podcasts";
+import { getPodcast, getPodcasts } from "/@/Services/podcasts";
+import {
+  checkValidLocalStorage,
+  getLocalStorageItem,
+  saveToLocalStorage,
+} from "/@/Utils/localStorage";
 
 const PodcastEpisode = () => {
   const { podcastId, episodeId } = useParams();
@@ -11,29 +16,45 @@ const PodcastEpisode = () => {
   const [podcast, setPodcast] = useState<any | null>(null);
   const [episode, setEpisode] = useState<any | null>(null);
 
-  console.log(podcastId);
-
   useEffect(() => {
-    const saved_podcasts = localStorage.getItem("podcasts");
-    if (saved_podcasts === null) {
+    const isValid = checkValidLocalStorage("podcasts");
+
+    let podcasts;
+    if (isValid) {
+      podcasts = getLocalStorageItem("podcasts");
+    } else {
+      getPodcasts().then((pods) => {
+        podcasts = pods;
+        saveToLocalStorage("podcasts", pods);
+      });
+    }
+
+    const podcast = podcasts.find((pod: any) => pod.id === podcastId);
+    if (!podcast) {
       navigate("/");
       return;
     }
-
-    const podcasts = JSON.parse(saved_podcasts).podcasts;
-    const podcast = podcasts.find((pod: any) => pod.id === podcastId);
     setPodcast(podcast);
 
-    const saved_episodes = localStorage.getItem(podcastId as string);
-    if (saved_episodes === null) {
-      navigate("/");
-      return;
+    const isPodcastEpisodesValid = checkValidLocalStorage(podcast.id);
+
+    let episodes;
+    if (isPodcastEpisodesValid) {
+      episodes = getLocalStorageItem(podcast.id);
+    } else {
+      getPodcast(podcast.id).then((eps) => {
+        episodes = eps;
+        saveToLocalStorage(podcast.id, eps);
+      });
     }
 
-    const episodes = JSON.parse(saved_episodes).episodes;
     const episode = episodes.find(
       (ep: any) => String(ep.episodeId) === episodeId
     );
+    if (!episode) {
+      navigate("/");
+      return;
+    }
     setEpisode(episode);
   }, []);
 
@@ -47,15 +68,10 @@ const PodcastEpisode = () => {
           imgSrc={podcast.image}
         />
       )}
-      <div>
-        {/* <Card>
-          <CardContent>
-            <Typography>Episodes: 66</Typography>
-          </CardContent>
-        </Card> */}
+      <div style={{ flex: 1 }}>
         {!episode && <CircularProgress />}
         {episode && (
-          <Card style={{ maxHeight: "775px", maxWidth: "700px" }}>
+          <Card style={{ maxHeight: "775px" }}>
             <CardContent>
               <Typography variant="h6" sx={{ marginBottom: "8px" }}>
                 {episode.title}
