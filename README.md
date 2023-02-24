@@ -11,3 +11,9 @@ To run in developer mode use:
 
 For production mode use:
 `npm run serve`
+
+For e2e test run:
+`npm run dev`
+
+And in another terminal:
+`npm run cypress:open`
