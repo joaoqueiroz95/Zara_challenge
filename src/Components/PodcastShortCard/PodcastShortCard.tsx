@@ -8,20 +8,21 @@ interface IProps {
 
 const PodcastShortCard: React.FC<IProps> = ({ title, description, imgSrc }) => {
   return (
-    <div style={{ position: "relative" }}>
+    <div style={{ position: "relative", height: "300px", width: "300px" }}>
       <img
         src={imgSrc}
         style={{
           borderRadius: "50%",
-          height: 100,
-          width: 100,
+          height: "50%",
+          width: "50%",
           objectFit: "cover",
           overflow: "hidden",
-          top: -50,
-          left: 50,
+          position: "absolute",
+          top: "0px",
+          left: "25%",
         }}
       />
-      <Card sx={{ maxWidth: 200, marginTop: 50, paddingTop: 50 }}>
+      <Card sx={{ marginTop: "25%", paddingTop: "30%" }}>
         <CardContent>
           <Typography
             sx={{ textAlign: "center", fontWeight: 500 }}
