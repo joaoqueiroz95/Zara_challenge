@@ -1,9 +1,11 @@
+import { TextField } from "@mui/material";
 import { useEffect, useState } from "react";
 import PodcastShortCard from "/@/Components/PodcastShortCard/PodcastShortCard";
 import { getPodcasts } from "/@/Services/podcasts";
 
 const Home = () => {
   const [podcasts, setPodcasts] = useState([]);
+  const [filterVal, setFilterVal] = useState("");
 
   useEffect(() => {
     const saved_podcasts = localStorage.getItem("podcasts");
@@ -32,16 +34,40 @@ const Home = () => {
     }
   }, []);
 
+  const handleFilterChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setFilterVal(event.target.value);
+  };
+
+  const filteredPodcasts = podcasts.filter((podcast: any) => {
+    if (filterVal === "") return true;
+
+    const title = podcast.title.toLowerCase();
+    const author = podcast.author.toLowerCase();
+    const filterText = filterVal.toLowerCase();
+
+    return title.includes(filterText) || author.includes(filterText);
+  });
+
   return (
-    <div style={{ display: "flex", gap: "16px", flexWrap: "wrap" }}>
-      {podcasts.map((podcast: any) => (
-        <PodcastShortCard
-          key={podcast.title}
-          title={podcast.title}
-          description={podcast.author}
-          imgSrc={podcast.image}
+    <div>
+      <div style={{ margin: "16px 0 32px 0", textAlign: "right" }}>
+        <TextField
+          size="small"
+          placeholder="Filter podcasts..."
+          value={filterVal}
+          onChange={handleFilterChange}
         />
-      ))}
+      </div>
+      <div style={{ display: "flex", gap: "16px", flexWrap: "wrap" }}>
+        {filteredPodcasts.map((podcast: any) => (
+          <PodcastShortCard
+            key={podcast.title}
+            title={podcast.title}
+            description={podcast.author}
+            imgSrc={podcast.image}
+          />
+        ))}
+      </div>
     </div>
   );
 };
