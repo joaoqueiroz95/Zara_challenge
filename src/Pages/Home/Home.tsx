@@ -1,4 +1,4 @@
-import { TextField } from "@mui/material";
+import { Chip, TextField } from "@mui/material";
 import { useEffect, useState } from "react";
 import PodcastShortCard from "/@/Components/PodcastShortCard/PodcastShortCard";
 import { getPodcasts } from "/@/Services/podcasts";
@@ -50,13 +50,23 @@ const Home = () => {
 
   return (
     <div>
-      <div style={{ margin: "16px 0 32px 0", textAlign: "right" }}>
-        <TextField
-          size="small"
-          placeholder="Filter podcasts..."
-          value={filterVal}
-          onChange={handleFilterChange}
-        />
+      <div style={{ margin: "16px 0 32px 0" }}>
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "end",
+            gap: "8px",
+          }}
+        >
+          <Chip label={filteredPodcasts.length} color="primary" />
+          <TextField
+            size="small"
+            placeholder="Filter podcasts..."
+            value={filterVal}
+            onChange={handleFilterChange}
+          />
+        </div>
       </div>
       <div style={{ display: "flex", gap: "16px", flexWrap: "wrap" }}>
         {filteredPodcasts.map((podcast: any) => (
