@@ -30,7 +30,9 @@ const PodcastShortCard: React.FC<IProps> = ({ title, description, imgSrc }) => {
           >
             {title.toUpperCase()}
           </Typography>
-          <Typography sx={{ textAlign: "center" }}>{description}</Typography>
+          <Typography color="text.secondary" sx={{ textAlign: "center" }}>
+            Author: {description}
+          </Typography>
         </CardContent>
       </Card>
     </div>
