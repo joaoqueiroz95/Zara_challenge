@@ -1,4 +1,4 @@
-import { Card, CardContent, Typography } from "@mui/material";
+import { Card, CardContent, CircularProgress, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
 import { Navigate, useNavigate, useParams } from "react-router-dom";
 import EpisodesTable from "/@/Components/EpisodesTable/EpisodesTable";
@@ -45,6 +45,7 @@ const Podcast = () => {
             <Typography>Episodes: 66</Typography>
           </CardContent>
         </Card> */}
+        {episodes.length === 0 && <CircularProgress />}
         {episodes.length > 0 && (
           <Card style={{ maxHeight: "775px" }}>
             <CardContent>
