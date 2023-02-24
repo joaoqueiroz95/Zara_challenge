@@ -9,7 +9,7 @@ describe("getLocalStorageItem", () => {
   });
 
   test("returns null if the item does not exist in localStorage", () => {
-    expect(getLocalStorageItem("non-existent-key")).toBeNull();
+    expect(getLocalStorageItem("non-existent-key")).equal(null);
   });
 
   test("returns the value of the item if it exists in localStorage", () => {
@@ -17,7 +17,7 @@ describe("getLocalStorageItem", () => {
     const value = { value: "some-value" };
     localStorage.setItem(key, JSON.stringify(value));
 
-    expect(getLocalStorageItem(key)).toEqual("some-value");
+    expect(getLocalStorageItem(key)).equal("some-value");
   });
 });
 
@@ -27,20 +27,20 @@ describe("checkValidLocalStorage function", () => {
   });
 
   it("should return false if the key does not exist in localStorage", () => {
-    expect(checkValidLocalStorage("invalidKey")).toBe(false);
+    expect(checkValidLocalStorage("invalidKey")).equal(false);
   });
 
   it("should return true if the key exists and the date is within one day of the current date", () => {
     const value = { date: new Date().toISOString() };
     localStorage.setItem("validKey", JSON.stringify(value));
 
-    expect(checkValidLocalStorage("validKey")).toBe(true);
+    expect(checkValidLocalStorage("validKey")).equal(true);
   });
 
   it("should return false if the key exists and the date is more than one day ago", () => {
     const value = { date: new Date(Date.now() - 86400000).toISOString() };
     localStorage.setItem("invalidKey", JSON.stringify(value));
 
-    expect(checkValidLocalStorage("invalidKey")).toBe(false);
+    expect(checkValidLocalStorage("invalidKey")).equal(false);
   });
 });
