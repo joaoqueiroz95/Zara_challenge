@@ -1,7 +1,6 @@
 import { Card, CardContent, CircularProgress, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import EpisodesTable from "/@/Components/EpisodesTable/EpisodesTable";
 import PodcastDetailsCard from "/@/Components/PodcastDetailsCard/PodcastDetailsCard";
 import { getPodcast, getPodcasts } from "/@/Services/podcasts";
 import {
