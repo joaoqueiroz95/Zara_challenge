@@ -15,14 +15,14 @@ const PodcastEpisode = () => {
   const [podcast, setPodcast] = useState<any | null>(null);
   const [episode, setEpisode] = useState<any | null>(null);
 
-  useEffect(() => {
+  const init = async () => {
     const isValid = checkValidLocalStorage("podcasts");
 
     let podcasts;
     if (isValid) {
       podcasts = getLocalStorageItem("podcasts");
     } else {
-      getPodcasts().then((pods) => {
+      await getPodcasts().then((pods) => {
         podcasts = pods;
         saveToLocalStorage("podcasts", pods);
       });
@@ -41,7 +41,7 @@ const PodcastEpisode = () => {
     if (isPodcastEpisodesValid) {
       episodes = getLocalStorageItem(podcast.id);
     } else {
-      getPodcast(podcast.id).then((eps) => {
+      await getPodcast(podcast.id).then((eps) => {
         episodes = eps;
         saveToLocalStorage(podcast.id, eps);
       });
@@ -55,6 +55,10 @@ const PodcastEpisode = () => {
       return;
     }
     setEpisode(episode);
+  };
+
+  useEffect(() => {
+    init();
   }, []);
 
   return (

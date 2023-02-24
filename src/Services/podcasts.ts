@@ -8,7 +8,6 @@ export const getPodcasts = () => {
     )
     .then((res) => {
       const podcasts = res.data.feed.entry;
-      console.log(podcasts);
       return podcasts.map((podcast: any) => ({
         id: podcast.id.attributes["im:id"],
         title: podcast["im:name"].label,
@@ -29,13 +28,6 @@ export const getPodcast = (id: string) => {
     .then((res) => {
       //const podcasts = res.data.feed.entry;
       const podcast_info = JSON.parse(res.data.contents).results.slice(1);
-      console.log(podcast_info);
-
-      /* const ret: any = {};
-      ret["podcast"] = {
-        author: podcast_info[0].artistName,
-        title: podcast_info[0].collectionName,
-      }; */
 
       return podcast_info.map((episode: any) => {
         return {
