@@ -6,7 +6,14 @@ const App = () => {
     <div>
       <header style={{ borderBottom: "1px solid #e1e1e1", padding: "8px" }}>
         <Typography
-          sx={{ color: "#0789c7", fontWeight: 500, fontSize: "1.2rem" }}
+          component="a"
+          href="/"
+          sx={{
+            color: "#0789c7",
+            fontWeight: 500,
+            fontSize: "1.2rem",
+            textDecoration: "none",
+          }}
         >
           Podcaster
         </Typography>

@@ -46,7 +46,7 @@ const Podcast = () => {
         </Card> */}
         {episodes.length === 0 && <CircularProgress />}
         {episodes.length > 0 && (
-          <Card style={{ maxHeight: "775px" }}>
+          <Card style={{ maxHeight: "775px", overflowY: "auto" }}>
             <CardContent>
               <EpisodesTable data={episodes} podcastId={podcastId} />
             </CardContent>
