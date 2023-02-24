@@ -44,6 +44,7 @@ export const getPodcast = (id: string) => {
           date: episode.releaseDate.slice(0, 10),
           episodeId: episode.trackId,
           description: episode.description,
+          audio: episode.episodeUrl,
         };
       });
     });

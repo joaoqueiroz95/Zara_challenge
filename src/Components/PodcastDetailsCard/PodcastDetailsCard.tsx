@@ -14,7 +14,7 @@ const PodcastDetailsCard: React.FC<IProps> = ({
   imgSrc,
 }) => {
   return (
-    <Card sx={{ width: "250px", maxHeight: "840px" }}>
+    <Card sx={{ width: "250px", maxHeight: "840px", overflowY: "auto" }}>
       <CardContent>
         <div>
           <img src={imgSrc} width="100%" />

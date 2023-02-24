@@ -55,10 +55,14 @@ const PodcastEpisode = () => {
         </Card> */}
         {!episode && <CircularProgress />}
         {episode && (
-          <Card style={{ maxHeight: "775px" }}>
+          <Card style={{ maxHeight: "775px", maxWidth: "700px" }}>
             <CardContent>
               <Typography variant="h4">{episode.title}</Typography>
               <Typography>{episode.description}</Typography>
+              <audio controls>
+                <source src={episode.audio} type="audio/mpeg" />
+                Your browser does not support the audio element.
+              </audio>
             </CardContent>
           </Card>
         )}
