@@ -1,14 +1,30 @@
 import { Card, CardContent, Typography } from "@mui/material";
+import { useNavigate } from "react-router-dom";
 
 interface IProps {
+  id: string;
   title: string;
-  description: string;
+  author: string;
   imgSrc: string;
 }
 
-const PodcastShortCard: React.FC<IProps> = ({ title, description, imgSrc }) => {
+const PodcastShortCard: React.FC<IProps> = ({ id, title, author, imgSrc }) => {
+  const navigate = useNavigate();
+
+  const handleClick = () => {
+    navigate(`/podcast/${id}`);
+  };
+
   return (
-    <div style={{ position: "relative", height: "300px", width: "300px" }}>
+    <div
+      style={{
+        position: "relative",
+        height: "300px",
+        width: "300px",
+        cursor: "pointer",
+      }}
+      onClick={handleClick}
+    >
       <img
         src={imgSrc}
         style={{
@@ -31,7 +47,7 @@ const PodcastShortCard: React.FC<IProps> = ({ title, description, imgSrc }) => {
             {title.toUpperCase()}
           </Typography>
           <Typography color="text.secondary" sx={{ textAlign: "center" }}>
-            Author: {description}
+            Author: {author}
           </Typography>
         </CardContent>
       </Card>

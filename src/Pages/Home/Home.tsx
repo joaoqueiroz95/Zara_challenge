@@ -61,9 +61,10 @@ const Home = () => {
       <div style={{ display: "flex", gap: "16px", flexWrap: "wrap" }}>
         {filteredPodcasts.map((podcast: any) => (
           <PodcastShortCard
-            key={podcast.title}
+            key={podcast.id}
+            id={podcast.id}
             title={podcast.title}
-            description={podcast.author}
+            author={podcast.author}
             imgSrc={podcast.image}
           />
         ))}

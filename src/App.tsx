@@ -1,4 +1,4 @@
-import { Typography } from "@mui/material";
+import { Button, Typography } from "@mui/material";
 import Router from "./Router";
 
 const App = () => {
@@ -12,7 +12,7 @@ const App = () => {
         </Typography>
       </header>
       <div style={{ margin: "16px" }}>
-        <Router />;
+        <Router />
       </div>
     </div>
   );
