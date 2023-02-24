@@ -42,6 +42,8 @@ export const getPodcast = (id: string) => {
           title: episode.trackName,
           duration: formatMilliseconds(episode.trackTimeMillis),
           date: episode.releaseDate.slice(0, 10),
+          episodeId: episode.trackId,
+          description: episode.description,
         };
       });
     });

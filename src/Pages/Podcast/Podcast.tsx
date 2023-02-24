@@ -11,8 +11,6 @@ const Podcast = () => {
   const [podcast, setPodcast] = useState<any | null>(null);
   const [episodes, setEpisodes] = useState([]);
 
-  console.log(podcastId);
-
   useEffect(() => {
     const saved_podcasts = localStorage.getItem("podcasts");
     if (saved_podcasts === null) {
@@ -26,6 +24,7 @@ const Podcast = () => {
 
     getPodcast(podcastId as string).then((res) => {
       setEpisodes(res);
+      localStorage.setItem(podcast.id, JSON.stringify(res));
     });
   }, []);
 
@@ -49,7 +48,7 @@ const Podcast = () => {
         {episodes.length > 0 && (
           <Card style={{ maxHeight: "775px" }}>
             <CardContent>
-              <EpisodesTable data={episodes} />
+              <EpisodesTable data={episodes} podcastId={podcastId} />
             </CardContent>
           </Card>
         )}

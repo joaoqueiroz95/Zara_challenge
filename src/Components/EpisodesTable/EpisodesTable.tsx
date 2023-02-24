@@ -1,6 +1,7 @@
 import {
   Card,
   CardContent,
+  Link,
   Paper,
   Table,
   TableBody,
@@ -13,10 +14,11 @@ import {
 import { useNavigate } from "react-router-dom";
 
 interface IProps {
+  podcastId: string | undefined;
   data: any;
 }
 
-const EpisodesTable: React.FC<IProps> = ({ data }) => {
+const EpisodesTable: React.FC<IProps> = ({ data, podcastId }) => {
   return (
     <TableContainer>
       <Table sx={{ minWidth: 650 }} aria-label="simple table">
@@ -34,7 +36,9 @@ const EpisodesTable: React.FC<IProps> = ({ data }) => {
               sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
             >
               <TableCell component="th" scope="row">
-                {row.title}
+                <Link href={`/podcast/${podcastId}/episode/${row.episodeId}`}>
+                  {row.title}
+                </Link>
               </TableCell>
               <TableCell>{row.date}</TableCell>
               <TableCell align="center">{row.duration}</TableCell>
