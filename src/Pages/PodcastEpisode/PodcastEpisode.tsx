@@ -30,7 +30,7 @@ const PodcastEpisode = () => {
       return;
     }
 
-    const episodes = JSON.parse(saved_episodes);
+    const episodes = JSON.parse(saved_episodes).episodes;
     const episode = episodes.find(
       (ep: any) => String(ep.episodeId) === episodeId
     );

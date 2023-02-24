@@ -22,10 +22,30 @@ const Podcast = () => {
     const podcast = podcasts.find((pod: any) => pod.id === podcastId);
     setPodcast(podcast);
 
-    getPodcast(podcastId as string).then((res) => {
-      setEpisodes(res);
-      localStorage.setItem(podcast.id, JSON.stringify(res));
-    });
+    const saved_podcast = localStorage.getItem(podcast.id);
+
+    let diffDays = 0;
+    if (saved_podcast !== null) {
+      const date = new Date(JSON.parse(saved_podcast).date);
+
+      // Calculate the difference in time between the stored date and now
+      const diffTime = Math.abs(Date.now() - date.getTime());
+      diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+    }
+
+    if (saved_podcast === null || diffDays >= 1) {
+      const currentDate = new Date();
+
+      getPodcast(podcastId as string).then((res) => {
+        setEpisodes(res);
+        localStorage.setItem(
+          podcast.id,
+          JSON.stringify({ date: currentDate.toISOString(), episodes: res })
+        );
+      });
+    } else {
+      setEpisodes(JSON.parse(saved_podcast).episodes);
+    }
   }, []);
 
   return (
