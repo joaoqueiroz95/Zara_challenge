@@ -6,8 +6,9 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
+    "preview": "vite preview",
     "test": "jest",
-    "serve": "npm run build && serve dist",
+    "serve": "npm run build && npm run preview",
     "cypress:open": "cypress open"
   },
   "dependencies": {
@@ -18,8 +19,7 @@
     "axios": "1.2.2",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "react-router-dom": "^6.8.1",
-    "serve": "^14.2.0"
+    "react-router-dom": "^6.8.1"
   },
   "devDependencies": {
     "@types/jest": "^29.4.0",
