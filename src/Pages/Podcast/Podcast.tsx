@@ -1,9 +1,10 @@
 import { Card, CardContent, CircularProgress, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
-import { Navigate, useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import EpisodesTable from "/@/Components/EpisodesTable/EpisodesTable";
 import PodcastDetailsCard from "/@/Components/PodcastDetailsCard/PodcastDetailsCard";
 import { getPodcast, getPodcasts } from "/@/Services/podcasts";
+import { useHeaderLoaderStore } from "/@/Stores/loaderStore";
 import {
   checkValidLocalStorage,
   getLocalStorageItem,
@@ -16,7 +17,11 @@ const Podcast = () => {
   const [podcast, setPodcast] = useState<any | null>(null);
   const [episodes, setEpisodes] = useState([]);
 
+  const setIsLoading = useHeaderLoaderStore((state) => state.setIsLoading);
+
   const init = async () => {
+    setIsLoading(true);
+
     const isValid = checkValidLocalStorage("podcasts");
 
     let podcasts;
@@ -41,11 +46,12 @@ const Podcast = () => {
     if (isPodcastEpisodesValid) {
       setEpisodes(getLocalStorageItem(podcast.id));
     } else {
-      getPodcast(podcast.id).then((eps) => {
+      await getPodcast(podcast.id).then((eps) => {
         setEpisodes(eps);
         saveToLocalStorage(podcast.id, eps);
       });
     }
+    setIsLoading(false);
   };
 
   useEffect(() => {
@@ -70,7 +76,6 @@ const Podcast = () => {
             </CardContent>
           </Card>
         )}
-        {episodes.length === 0 && <CircularProgress />}
         {episodes.length > 0 && (
           <Card style={{ maxHeight: "775px", overflowY: "auto" }}>
             <CardContent>

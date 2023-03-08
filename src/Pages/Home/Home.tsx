@@ -2,6 +2,7 @@ import { Chip, TextField } from "@mui/material";
 import { useEffect, useState } from "react";
 import PodcastShortCard from "/@/Components/PodcastShortCard/PodcastShortCard";
 import { getPodcasts } from "/@/Services/podcasts";
+import { useHeaderLoaderStore } from "/@/Stores/loaderStore";
 import {
   checkValidLocalStorage,
   getLocalStorageItem,
@@ -12,13 +13,18 @@ const Home = () => {
   const [podcasts, setPodcasts] = useState([]);
   const [filterVal, setFilterVal] = useState("");
 
+  const setIsLoading = useHeaderLoaderStore((state) => state.setIsLoading);
+
   useEffect(() => {
     const isValid = checkValidLocalStorage("podcasts");
 
+    setIsLoading(true);
     if (isValid) {
       setPodcasts(getLocalStorageItem("podcasts"));
+      setIsLoading(false);
     } else {
       getPodcasts().then((podcasts) => {
+        setIsLoading(false);
         setPodcasts(podcasts);
         saveToLocalStorage("podcasts", podcasts);
       });

@@ -1,8 +1,9 @@
-import { Card, CardContent, CircularProgress, Typography } from "@mui/material";
+import { Card, CardContent, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import PodcastDetailsCard from "/@/Components/PodcastDetailsCard/PodcastDetailsCard";
 import { getPodcast, getPodcasts } from "/@/Services/podcasts";
+import { useHeaderLoaderStore } from "/@/Stores/loaderStore";
 import {
   checkValidLocalStorage,
   getLocalStorageItem,
@@ -15,7 +16,10 @@ const PodcastEpisode = () => {
   const [podcast, setPodcast] = useState<any | null>(null);
   const [episode, setEpisode] = useState<any | null>(null);
 
+  const setIsLoading = useHeaderLoaderStore((state) => state.setIsLoading);
+
   const init = async () => {
+    setIsLoading(true);
     const isValid = checkValidLocalStorage("podcasts");
 
     let podcasts;
@@ -55,6 +59,8 @@ const PodcastEpisode = () => {
       return;
     }
     setEpisode(episode);
+
+    setIsLoading(false);
   };
 
   useEffect(() => {
@@ -72,7 +78,6 @@ const PodcastEpisode = () => {
         />
       )}
       <div style={{ flex: 1 }}>
-        {!episode && <CircularProgress />}
         {episode && (
           <Card style={{ maxHeight: "775px" }}>
             <CardContent>
