@@ -9,7 +9,7 @@ describe("Podcast Page", () => {
     cy.url().should("eq", "http://localhost:3001/");
   });
 
-  it("Clicking List element should go to episode datails page", () => {
+  it("Episode should have audio element", () => {
     cy.visit(mainUrl);
     cy.wait(10000);
 
