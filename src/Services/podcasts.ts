@@ -20,14 +20,9 @@ export const getPodcasts = () => {
 
 export const getPodcast = (id: string) => {
   return axios
-    .get(
-      `https://api.allorigins.win/get?url=${encodeURIComponent(
-        `https://itunes.apple.com/lookup?id=${id}&entity=podcastEpisode`
-      )}`
-    )
+    .get(`https://itunes.apple.com/lookup?id=${id}&entity=podcastEpisode`)
     .then((res) => {
-      //const podcasts = res.data.feed.entry;
-      const podcast_info = JSON.parse(res.data.contents).results.slice(1);
+      const podcast_info = res.data.results.slice(1);
 
       return podcast_info.map((episode: any) => {
         return {
