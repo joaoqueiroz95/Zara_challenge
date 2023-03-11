@@ -55,7 +55,7 @@ const Home = () => {
 
   return (
     <div>
-      <div style={{ margin: "16px 0 64px 0" }}>
+      <div style={{ margin: "16px 0 32px 0" }}>
         <div
           style={{
             display: "flex",
@@ -79,7 +79,7 @@ const Home = () => {
             style={{
               display: "flex",
               justifyContent: "space-between",
-              marginBottom: "16px",
+              marginBottom: "32px",
             }}
           >
             {podcastsChunk.map((podcast: any) => (

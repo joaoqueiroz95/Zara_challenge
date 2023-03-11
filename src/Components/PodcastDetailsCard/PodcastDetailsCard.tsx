@@ -28,7 +28,9 @@ const PodcastDetailsCard: React.FC<IProps> = ({
         <Typography sx={{ fontWeight: 500 }} gutterBottom>
           Description:
         </Typography>
-        <Typography color="text.secondary">{description}</Typography>
+        <Typography color="text.secondary" sx={{ fontStyle: "italic" }}>
+          {description}
+        </Typography>
       </CardContent>
     </Card>
   );

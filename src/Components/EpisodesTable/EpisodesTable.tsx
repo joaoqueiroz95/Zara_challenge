@@ -20,7 +20,7 @@ interface IProps {
 
 const EpisodesTable: React.FC<IProps> = ({ data, podcastId }) => {
   return (
-    <TableContainer>
+    <TableContainer sx={{ maxHeight: "72vh" }}>
       <Table sx={{ minWidth: 650 }} aria-label="simple table">
         <TableHead>
           <TableRow>

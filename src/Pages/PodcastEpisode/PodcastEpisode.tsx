@@ -1,4 +1,4 @@
-import { Card, CardContent, Typography } from "@mui/material";
+import { Card, CardContent, Divider, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import PodcastDetailsCard from "/@/Components/PodcastDetailsCard/PodcastDetailsCard";
@@ -81,13 +81,20 @@ const PodcastEpisode = () => {
         {episode && (
           <Card style={{ maxHeight: "775px" }}>
             <CardContent>
-              <Typography variant="h6" sx={{ marginBottom: "8px" }}>
+              <Typography variant="h6" sx={{ marginBottom: "16px" }}>
                 {episode.title}
               </Typography>
-              <Typography sx={{ marginBottom: "8px" }}>
-                {episode.description}
-              </Typography>
-              <audio controls>
+              <div
+                style={{
+                  marginBottom: "16px",
+                  fontFamily: '"Roboto","Helvetica","Arial",sans-serif',
+                  lineHeight: 1.5,
+                  letterSpacing: "0.00938em",
+                }}
+                dangerouslySetInnerHTML={{ __html: episode.description }}
+              ></div>
+              <Divider sx={{ margin: "16px" }} />
+              <audio controls style={{ width: "100%" }}>
                 <source src={episode.audio} type="audio/mpeg" />
                 Your browser does not support the audio element.
               </audio>

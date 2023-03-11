@@ -12,8 +12,6 @@ describe("Podcast Page", () => {
     cy.visit("http://localhost:3001/");
     cy.get(".MuiCardContent-root").first().click();
 
-    cy.wait(10000);
-
     cy.get(".MuiLink-underlineAlways").first().click();
 
     cy.url().should("include", "/episode/");

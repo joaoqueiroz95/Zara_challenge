@@ -68,16 +68,31 @@ const Podcast = () => {
           imgSrc={podcast.image}
         />
       )}
-      <div style={{ flex: 1 }}>
+      <div
+        style={{
+          flex: 1,
+          display: "flex",
+          flexDirection: "column",
+          gap: "16px",
+        }}
+      >
         {episodes.length > 0 && (
-          <Card sx={{ merginBottom: "8px" }}>
-            <CardContent>
-              <Typography>Episodes: {episodes.length}</Typography>
+          <Card>
+            <CardContent
+              sx={{
+                "&:last-child": {
+                  paddingBottom: "16px",
+                },
+              }}
+            >
+              <Typography sx={{ fontSize: "1.25rem", fontWeight: 500 }}>
+                Episodes: {episodes.length}
+              </Typography>
             </CardContent>
           </Card>
         )}
         {episodes.length > 0 && (
-          <Card style={{ maxHeight: "775px", overflowY: "auto" }}>
+          <Card style={{ maxHeight: "84vh", overflowY: "auto" }}>
             <CardContent>
               <EpisodesTable data={episodes} podcastId={podcastId} />
             </CardContent>
