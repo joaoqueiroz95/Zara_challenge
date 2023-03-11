@@ -45,9 +45,17 @@ const Home = () => {
     return title.includes(filterText) || author.includes(filterText);
   });
 
+  const chunkArray = (arr: any[], chunkSize: number) => {
+    const chunks = [];
+    for (let i = 0; i < arr.length; i += chunkSize) {
+      chunks.push(arr.slice(i, i + chunkSize));
+    }
+    return chunks;
+  };
+
   return (
     <div>
-      <div style={{ margin: "16px 0 32px 0" }}>
+      <div style={{ margin: "16px 0 64px 0" }}>
         <div
           style={{
             display: "flex",
@@ -65,15 +73,25 @@ const Home = () => {
           />
         </div>
       </div>
-      <div style={{ display: "flex", gap: "16px", flexWrap: "wrap" }}>
-        {filteredPodcasts.map((podcast: any) => (
-          <PodcastShortCard
-            key={podcast.id}
-            id={podcast.id}
-            title={podcast.title}
-            author={podcast.author}
-            imgSrc={podcast.image}
-          />
+      <div>
+        {chunkArray(filteredPodcasts, 4).map((podcastsChunk: any[]) => (
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "space-between",
+              marginBottom: "16px",
+            }}
+          >
+            {podcastsChunk.map((podcast: any) => (
+              <PodcastShortCard
+                key={podcast.id}
+                id={podcast.id}
+                title={podcast.title}
+                author={podcast.author}
+                imgSrc={podcast.image}
+              />
+            ))}
+          </div>
         ))}
       </div>
     </div>

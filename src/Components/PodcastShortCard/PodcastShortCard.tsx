@@ -38,10 +38,17 @@ const PodcastShortCard: React.FC<IProps> = ({ id, title, author, imgSrc }) => {
           left: "25%",
         }}
       />
-      <Card sx={{ marginTop: "25%", paddingTop: "30%" }}>
+      <Card sx={{ marginTop: "25%", paddingTop: "30%", height: "115px" }}>
         <CardContent>
           <Typography
-            sx={{ textAlign: "center", fontWeight: 500 }}
+            sx={{
+              textAlign: "center",
+              fontWeight: 500,
+              width: "230px",
+              textOverflow: "ellipsis",
+              overflow: "hidden",
+              whiteSpace: "nowrap",
+            }}
             gutterBottom
           >
             {title.toUpperCase()}
