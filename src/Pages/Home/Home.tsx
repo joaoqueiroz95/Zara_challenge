@@ -10,6 +10,7 @@ import {
 } from "/@/Utils/localStorage";
 
 const Home = () => {
+  const x = 1;
   const [podcasts, setPodcasts] = useState([]);
   const [filterVal, setFilterVal] = useState("");
 
