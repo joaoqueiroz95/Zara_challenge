@@ -14,18 +14,22 @@ cd Zara_challenge
 npm install
 ```
 
-To run in developer mode use:
+### To run in developer mode use:
 
 `npm run dev`
 
-For production mode use:
+### For production mode use:
 
 `npm run serve`
 
-For e2e test run:
+### For e2e test run:
 
 `npm run dev`
 
 And in another terminal:
 
 `npm run cypress:open`
+
+### For Unit tests run:
+
+`npm test`
