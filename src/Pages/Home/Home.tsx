@@ -1,4 +1,4 @@
-import { Chip, TextField } from "@mui/material";
+import { Chip, TextField, Grid } from "@mui/material";
 import { useEffect, useState } from "react";
 import PodcastShortCard from "/@/Components/PodcastShortCard/PodcastShortCard";
 import { getPodcasts } from "/@/Services/podcasts";
@@ -10,7 +10,6 @@ import {
 } from "/@/Utils/localStorage";
 
 const Home = () => {
-  const x = 1;
   const [podcasts, setPodcasts] = useState([]);
   const [filterVal, setFilterVal] = useState("");
 
@@ -76,7 +75,19 @@ const Home = () => {
         </div>
       </div>
       <div>
-        {chunkArray(filteredPodcasts, 4).map((podcastsChunk: any[]) => (
+        <Grid container spacing={2}>
+          {filteredPodcasts.map((podcast: any) => (
+            <Grid item xs={12} sm={6} md={4} lg={3} key={podcast.id}>
+              <PodcastShortCard
+                id={podcast.id}
+                title={podcast.title}
+                author={podcast.author}
+                imgSrc={podcast.image}
+              />
+            </Grid>
+          ))}
+        </Grid>
+        {/* {chunkArray(filteredPodcasts, 4).map((podcastsChunk: any[]) => (
           <div
             style={{
               display: "flex",
@@ -94,7 +105,7 @@ const Home = () => {
               />
             ))}
           </div>
-        ))}
+        ))} */}
       </div>
     </div>
   );

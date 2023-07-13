@@ -19,7 +19,7 @@ const PodcastShortCard: React.FC<IProps> = ({ id, title, author, imgSrc }) => {
     <div
       style={{
         position: "relative",
-        height: "300px",
+        height: "250px",
         width: "300px",
         cursor: "pointer",
       }}
@@ -29,19 +29,16 @@ const PodcastShortCard: React.FC<IProps> = ({ id, title, author, imgSrc }) => {
         src={imgSrc}
         style={{
           borderRadius: "50%",
-          height: "50%",
-          width: "50%",
+          height: "150px",
+          width: "150x",
           objectFit: "cover",
           overflow: "hidden",
           position: "absolute",
-          top: "0px",
+          top: "-75px",
           left: "25%",
         }}
       />
-      <Card
-        sx={{ marginTop: "25%", paddingTop: "30%", height: "115px" }}
-        data-test="podcast-short-card"
-      >
+      <Card sx={{ marginTop: "20%", paddingTop: "30%" }} data-test="podcast-short-card">
         <CardContent>
           <Typography
             sx={{
