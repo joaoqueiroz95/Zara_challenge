@@ -1,63 +1,25 @@
-import { Card, CardContent, CircularProgress, Typography } from "@mui/material";
-import { useEffect, useState } from "react";
+import { Card, CardContent, LinearProgress, Typography } from "@mui/material";
+import { useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import EpisodesTable from "/@/Components/EpisodesTable/EpisodesTable";
 import PodcastDetailsCard from "/@/Components/PodcastDetailsCard/PodcastDetailsCard";
-import { getPodcast, getPodcasts } from "/@/Services/podcasts";
 import { useHeaderLoaderStore } from "/@/Stores/loaderStore";
-import {
-  checkValidLocalStorage,
-  getLocalStorageItem,
-  saveToLocalStorage,
-} from "/@/Utils/localStorage";
-import { IEpisode } from "/@/types/episode";
+import usePodcast from "/@/Hooks/usePodcast";
 
 const Podcast = () => {
-  const { podcastId } = useParams();
   const navigate = useNavigate();
-  const [podcast, setPodcast] = useState<any | null>(null);
-  const [episodes, setEpisodes] = useState<IEpisode[]>([]);
+  const { podcastId } = useParams();
 
-  const setIsLoading = useHeaderLoaderStore((state) => state.setIsLoading);
+  const { podcast, episodes, isLoading } = usePodcast(podcastId);
+
+  const setIsLoadingHeader = useHeaderLoaderStore((state) => state.setIsLoading);
 
   useEffect(() => {
-    const init = async () => {
-      setIsLoading(true);
-
-      const isValid = checkValidLocalStorage("podcasts");
-
-      let podcasts;
-      if (isValid) {
-        podcasts = getLocalStorageItem("podcasts");
-      } else {
-        await getPodcasts().then((pods) => {
-          podcasts = pods;
-          saveToLocalStorage("podcasts", pods);
-        });
-      }
-
-      const podcast = podcasts.find((pod: any) => pod.id === podcastId);
-      if (!podcast) {
-        navigate("/");
-        return;
-      }
-      setPodcast(podcast);
-
-      const isPodcastEpisodesValid = checkValidLocalStorage(podcast.id);
-
-      if (isPodcastEpisodesValid) {
-        setEpisodes(getLocalStorageItem(podcast.id));
-      } else {
-        await getPodcast(podcast.id).then((eps) => {
-          setEpisodes(eps);
-          saveToLocalStorage(podcast.id, eps);
-        });
-      }
-      setIsLoading(false);
-    };
-
-    init();
-  }, []);
+    setIsLoadingHeader(isLoading);
+    if (!isLoading && !podcast) {
+      navigate("/");
+    }
+  }, [isLoading]);
 
   return (
     <div style={{ display: "flex", gap: "32px" }}>
@@ -77,7 +39,7 @@ const Podcast = () => {
           gap: "16px",
         }}
       >
-        {episodes.length > 0 && (
+        {!isLoading && episodes.length > 0 && (
           <Card>
             <CardContent
               sx={{
@@ -92,7 +54,14 @@ const Podcast = () => {
             </CardContent>
           </Card>
         )}
-        {episodes.length > 0 && (
+        {isLoading && (
+          <Card>
+            <CardContent>
+              <LinearProgress />
+            </CardContent>
+          </Card>
+        )}
+        {!isLoading && episodes.length > 0 && (
           <Card style={{ maxHeight: "84vh", overflowY: "auto" }}>
             <CardContent>
               <EpisodesTable data={episodes} podcastId={podcastId} />

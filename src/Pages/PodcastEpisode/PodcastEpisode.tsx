@@ -1,69 +1,24 @@
 import { Card, CardContent, Divider, Typography } from "@mui/material";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import PodcastDetailsCard from "/@/Components/PodcastDetailsCard/PodcastDetailsCard";
-import { getPodcast, getPodcasts } from "/@/Services/podcasts";
 import { useHeaderLoaderStore } from "/@/Stores/loaderStore";
-import {
-  checkValidLocalStorage,
-  getLocalStorageItem,
-  saveToLocalStorage,
-} from "/@/Utils/localStorage";
+import useEpisode from "/@/Hooks/useEpisode";
 
 const PodcastEpisode = () => {
   const { podcastId, episodeId } = useParams();
   const navigate = useNavigate();
-  const [podcast, setPodcast] = useState<any | null>(null);
-  const [episode, setEpisode] = useState<any | null>(null);
 
-  const setIsLoading = useHeaderLoaderStore((state) => state.setIsLoading);
+  const { podcast, episode, isLoading } = useEpisode(podcastId, episodeId);
+
+  const setIsLoadingHeader = useHeaderLoaderStore((state) => state.setIsLoading);
 
   useEffect(() => {
-    const init = async () => {
-      setIsLoading(true);
-      const isValid = checkValidLocalStorage("podcasts");
-
-      let podcasts;
-      if (isValid) {
-        podcasts = getLocalStorageItem("podcasts");
-      } else {
-        await getPodcasts().then((pods) => {
-          podcasts = pods;
-          saveToLocalStorage("podcasts", pods);
-        });
-      }
-
-      const podcast = podcasts.find((pod: any) => pod.id === podcastId);
-      if (!podcast) {
-        navigate("/");
-        return;
-      }
-      setPodcast(podcast);
-
-      const isPodcastEpisodesValid = checkValidLocalStorage(podcast.id);
-
-      let episodes;
-      if (isPodcastEpisodesValid) {
-        episodes = getLocalStorageItem(podcast.id);
-      } else {
-        await getPodcast(podcast.id).then((eps) => {
-          episodes = eps;
-          saveToLocalStorage(podcast.id, eps);
-        });
-      }
-
-      const episode = episodes.find((ep: any) => String(ep.episodeId) === episodeId);
-      if (!episode) {
-        navigate("/");
-        return;
-      }
-      setEpisode(episode);
-
-      setIsLoading(false);
-    };
-
-    init();
-  }, []);
+    setIsLoadingHeader(isLoading);
+    if (!isLoading && (!podcast || !episode)) {
+      navigate("/");
+    }
+  }, [isLoading]);
 
   return (
     <div style={{ display: "flex", gap: "32px" }}>
