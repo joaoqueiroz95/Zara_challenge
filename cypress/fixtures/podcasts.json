@@ -1,0 +1,19 @@
+{
+  "podcasts": [
+    {
+      "id": { "attributes": { "im:id": "1535809341" } },
+      "im:name": { "label": "The Joe Budden Podcast" },
+      "im:artist": { "label": "The Joe Budden Network" },
+      "im:image": [
+        0,
+        0,
+        {
+          "label": "https://is1-ssl.mzstatic.com/image/thumb/Podcasts1…4f39802a/mza_182995249085044287.jpg/170x170bb.png"
+        }
+      ],
+      "summary": {
+        "label": "Tune into Joe Budden and his friends. Follow along…he crazy adventures of these very random friends."
+      }
+    }
+  ]
+}
