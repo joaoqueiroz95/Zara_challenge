@@ -1,18 +1,18 @@
 describe("Podcast Page", () => {
   it("Clicking Header goes back to main page", () => {
     cy.visit("http://localhost:3001/");
-    cy.get(".MuiCardContent-root").first().click();
+    cy.get("[data-test=podcast-short-card]").first().click();
 
-    cy.contains("Podcaster").click();
+    cy.get("[data-test=logo-header]").click();
 
     cy.url().should("eq", "http://localhost:3001/");
   });
 
-  it("Clicking List element should go to episode datails page", () => {
+  it("Clicking List element should go to episode details page", () => {
     cy.visit("http://localhost:3001/");
-    cy.get(".MuiCardContent-root").first().click();
+    cy.get("[data-test=podcast-short-card]").first().click();
 
-    cy.get(".MuiLink-underlineAlways").first().click();
+    cy.get("[data-test=episode-link]").first().click();
 
     cy.url().should("include", "/episode/");
   });

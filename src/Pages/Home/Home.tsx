@@ -65,12 +65,13 @@ const Home = () => {
             gap: "16px",
           }}
         >
-          <Chip label={filteredPodcasts.length} color="primary" />
+          <Chip label={filteredPodcasts.length} color="primary" data-test="chip-number-podcasts" />
           <TextField
             size="small"
             placeholder="Filter podcasts..."
             value={filterVal}
             onChange={handleFilterChange}
+            data-test="filter-podcasts-input"
           />
         </div>
       </div>

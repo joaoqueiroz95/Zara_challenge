@@ -1,10 +1,9 @@
 describe("Podcast Page", () => {
-  let mainUrl =
-    "http://localhost:3001/podcast/1535809341/episode/1000601100410";
+  let mainUrl = "http://localhost:3001/podcast/1535809341/episode/1000601100410";
 
   it("Clicking Header goes back to main page", () => {
     cy.visit(mainUrl);
-    cy.contains("Podcaster").click();
+    cy.get("[data-test=logo-header]").click();
 
     cy.url().should("eq", "http://localhost:3001/");
   });
@@ -12,7 +11,7 @@ describe("Podcast Page", () => {
   it("Episode should have audio element", () => {
     cy.visit(mainUrl);
 
-    cy.get("audio").should("exist");
+    cy.get("[data-test=episode-audio]").should("exist");
   });
 
   it("Using an invalid episodeId redirects to home page", () => {

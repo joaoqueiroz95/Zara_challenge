@@ -38,7 +38,10 @@ const PodcastShortCard: React.FC<IProps> = ({ id, title, author, imgSrc }) => {
           left: "25%",
         }}
       />
-      <Card sx={{ marginTop: "25%", paddingTop: "30%", height: "115px" }}>
+      <Card
+        sx={{ marginTop: "25%", paddingTop: "30%", height: "115px" }}
+        data-test="podcast-short-card"
+      >
         <CardContent>
           <Typography
             sx={{

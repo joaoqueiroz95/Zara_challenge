@@ -25,6 +25,7 @@ const App = () => {
             fontSize: "1.2rem",
             textDecoration: "none",
           }}
+          data-test="logo-header"
         >
           Podcaster
         </Typography>

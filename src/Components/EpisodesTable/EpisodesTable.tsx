@@ -31,12 +31,12 @@ const EpisodesTable: React.FC<IProps> = ({ data, podcastId }) => {
         </TableHead>
         <TableBody>
           {data.map((row: any) => (
-            <TableRow
-              key={row.title}
-              sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-            >
+            <TableRow key={row.title} sx={{ "&:last-child td, &:last-child th": { border: 0 } }}>
               <TableCell component="th" scope="row">
-                <Link href={`/podcast/${podcastId}/episode/${row.episodeId}`}>
+                <Link
+                  href={`/podcast/${podcastId}/episode/${row.episodeId}`}
+                  data-test="episode-link"
+                >
                   {row.title}
                 </Link>
               </TableCell>

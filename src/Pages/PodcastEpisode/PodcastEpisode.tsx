@@ -51,9 +51,7 @@ const PodcastEpisode = () => {
       });
     }
 
-    const episode = episodes.find(
-      (ep: any) => String(ep.episodeId) === episodeId
-    );
+    const episode = episodes.find((ep: any) => String(ep.episodeId) === episodeId);
     if (!episode) {
       navigate("/");
       return;
@@ -94,7 +92,7 @@ const PodcastEpisode = () => {
                 dangerouslySetInnerHTML={{ __html: episode.description }}
               ></div>
               <Divider sx={{ margin: "16px" }} />
-              <audio controls style={{ width: "100%" }}>
+              <audio controls style={{ width: "100%" }} data-test="episode-audio">
                 <source src={episode.audio} type="audio/mpeg" />
                 Your browser does not support the audio element.
               </audio>
