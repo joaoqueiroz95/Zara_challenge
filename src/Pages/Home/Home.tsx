@@ -1,57 +1,9 @@
 import { Chip, TextField, Grid } from "@mui/material";
-import { useEffect, useState } from "react";
 import PodcastShortCard from "/@/Components/PodcastShortCard/PodcastShortCard";
-import { getPodcasts } from "/@/Services/podcasts";
-import { useHeaderLoaderStore } from "/@/Stores/loaderStore";
-import {
-  checkValidLocalStorage,
-  getLocalStorageItem,
-  saveToLocalStorage,
-} from "/@/Utils/localStorage";
+import usePodcasts from "/@/Hooks/usePodcasts";
 
 const Home = () => {
-  const [podcasts, setPodcasts] = useState([]);
-  const [filterVal, setFilterVal] = useState("");
-
-  const setIsLoading = useHeaderLoaderStore((state) => state.setIsLoading);
-
-  useEffect(() => {
-    const isValid = checkValidLocalStorage("podcasts");
-
-    setIsLoading(true);
-    if (isValid) {
-      setPodcasts(getLocalStorageItem("podcasts"));
-      setIsLoading(false);
-    } else {
-      getPodcasts().then((podcasts) => {
-        setIsLoading(false);
-        setPodcasts(podcasts);
-        saveToLocalStorage("podcasts", podcasts);
-      });
-    }
-  }, []);
-
-  const handleFilterChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setFilterVal(event.target.value);
-  };
-
-  const filteredPodcasts = podcasts.filter((podcast: any) => {
-    if (filterVal === "") return true;
-
-    const title = podcast.title.toLowerCase();
-    const author = podcast.author.toLowerCase();
-    const filterText = filterVal.toLowerCase();
-
-    return title.includes(filterText) || author.includes(filterText);
-  });
-
-  const chunkArray = (arr: any[], chunkSize: number) => {
-    const chunks = [];
-    for (let i = 0; i < arr.length; i += chunkSize) {
-      chunks.push(arr.slice(i, i + chunkSize));
-    }
-    return chunks;
-  };
+  const { filteredPodcasts, filterVal, handleFilterChange } = usePodcasts();
 
   return (
     <div>
@@ -76,7 +28,7 @@ const Home = () => {
       </div>
       <div>
         <Grid container spacing={2}>
-          {filteredPodcasts.map((podcast: any) => (
+          {filteredPodcasts.map((podcast) => (
             <Grid item xs={12} sm={6} md={4} lg={3} key={podcast.id}>
               <PodcastShortCard
                 id={podcast.id}
@@ -87,25 +39,6 @@ const Home = () => {
             </Grid>
           ))}
         </Grid>
-        {/* {chunkArray(filteredPodcasts, 4).map((podcastsChunk: any[]) => (
-          <div
-            style={{
-              display: "flex",
-              justifyContent: "space-between",
-              marginBottom: "32px",
-            }}
-          >
-            {podcastsChunk.map((podcast: any) => (
-              <PodcastShortCard
-                key={podcast.id}
-                id={podcast.id}
-                title={podcast.title}
-                author={podcast.author}
-                imgSrc={podcast.image}
-              />
-            ))}
-          </div>
-        ))} */}
       </div>
     </div>
   );

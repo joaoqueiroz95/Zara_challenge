@@ -18,50 +18,50 @@ const PodcastEpisode = () => {
 
   const setIsLoading = useHeaderLoaderStore((state) => state.setIsLoading);
 
-  const init = async () => {
-    setIsLoading(true);
-    const isValid = checkValidLocalStorage("podcasts");
-
-    let podcasts;
-    if (isValid) {
-      podcasts = getLocalStorageItem("podcasts");
-    } else {
-      await getPodcasts().then((pods) => {
-        podcasts = pods;
-        saveToLocalStorage("podcasts", pods);
-      });
-    }
-
-    const podcast = podcasts.find((pod: any) => pod.id === podcastId);
-    if (!podcast) {
-      navigate("/");
-      return;
-    }
-    setPodcast(podcast);
-
-    const isPodcastEpisodesValid = checkValidLocalStorage(podcast.id);
-
-    let episodes;
-    if (isPodcastEpisodesValid) {
-      episodes = getLocalStorageItem(podcast.id);
-    } else {
-      await getPodcast(podcast.id).then((eps) => {
-        episodes = eps;
-        saveToLocalStorage(podcast.id, eps);
-      });
-    }
-
-    const episode = episodes.find((ep: any) => String(ep.episodeId) === episodeId);
-    if (!episode) {
-      navigate("/");
-      return;
-    }
-    setEpisode(episode);
-
-    setIsLoading(false);
-  };
-
   useEffect(() => {
+    const init = async () => {
+      setIsLoading(true);
+      const isValid = checkValidLocalStorage("podcasts");
+
+      let podcasts;
+      if (isValid) {
+        podcasts = getLocalStorageItem("podcasts");
+      } else {
+        await getPodcasts().then((pods) => {
+          podcasts = pods;
+          saveToLocalStorage("podcasts", pods);
+        });
+      }
+
+      const podcast = podcasts.find((pod: any) => pod.id === podcastId);
+      if (!podcast) {
+        navigate("/");
+        return;
+      }
+      setPodcast(podcast);
+
+      const isPodcastEpisodesValid = checkValidLocalStorage(podcast.id);
+
+      let episodes;
+      if (isPodcastEpisodesValid) {
+        episodes = getLocalStorageItem(podcast.id);
+      } else {
+        await getPodcast(podcast.id).then((eps) => {
+          episodes = eps;
+          saveToLocalStorage(podcast.id, eps);
+        });
+      }
+
+      const episode = episodes.find((ep: any) => String(ep.episodeId) === episodeId);
+      if (!episode) {
+        navigate("/");
+        return;
+      }
+      setEpisode(episode);
+
+      setIsLoading(false);
+    };
+
     init();
   }, []);
 

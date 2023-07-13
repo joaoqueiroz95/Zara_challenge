@@ -10,51 +10,52 @@ import {
   getLocalStorageItem,
   saveToLocalStorage,
 } from "/@/Utils/localStorage";
+import { IEpisode } from "/@/types/episode";
 
 const Podcast = () => {
   const { podcastId } = useParams();
   const navigate = useNavigate();
   const [podcast, setPodcast] = useState<any | null>(null);
-  const [episodes, setEpisodes] = useState([]);
+  const [episodes, setEpisodes] = useState<IEpisode[]>([]);
 
   const setIsLoading = useHeaderLoaderStore((state) => state.setIsLoading);
 
-  const init = async () => {
-    setIsLoading(true);
-
-    const isValid = checkValidLocalStorage("podcasts");
-
-    let podcasts;
-    if (isValid) {
-      podcasts = getLocalStorageItem("podcasts");
-    } else {
-      await getPodcasts().then((pods) => {
-        podcasts = pods;
-        saveToLocalStorage("podcasts", pods);
-      });
-    }
-
-    const podcast = podcasts.find((pod: any) => pod.id === podcastId);
-    if (!podcast) {
-      navigate("/");
-      return;
-    }
-    setPodcast(podcast);
-
-    const isPodcastEpisodesValid = checkValidLocalStorage(podcast.id);
-
-    if (isPodcastEpisodesValid) {
-      setEpisodes(getLocalStorageItem(podcast.id));
-    } else {
-      await getPodcast(podcast.id).then((eps) => {
-        setEpisodes(eps);
-        saveToLocalStorage(podcast.id, eps);
-      });
-    }
-    setIsLoading(false);
-  };
-
   useEffect(() => {
+    const init = async () => {
+      setIsLoading(true);
+
+      const isValid = checkValidLocalStorage("podcasts");
+
+      let podcasts;
+      if (isValid) {
+        podcasts = getLocalStorageItem("podcasts");
+      } else {
+        await getPodcasts().then((pods) => {
+          podcasts = pods;
+          saveToLocalStorage("podcasts", pods);
+        });
+      }
+
+      const podcast = podcasts.find((pod: any) => pod.id === podcastId);
+      if (!podcast) {
+        navigate("/");
+        return;
+      }
+      setPodcast(podcast);
+
+      const isPodcastEpisodesValid = checkValidLocalStorage(podcast.id);
+
+      if (isPodcastEpisodesValid) {
+        setEpisodes(getLocalStorageItem(podcast.id));
+      } else {
+        await getPodcast(podcast.id).then((eps) => {
+          setEpisodes(eps);
+          saveToLocalStorage(podcast.id, eps);
+        });
+      }
+      setIsLoading(false);
+    };
+
     init();
   }, []);
 

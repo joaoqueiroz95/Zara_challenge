@@ -1,17 +1,12 @@
 import {
-  Card,
-  CardContent,
   Link,
-  Paper,
   Table,
   TableBody,
   TableCell,
   TableContainer,
   TableHead,
   TableRow,
-  Typography,
 } from "@mui/material";
-import { useNavigate } from "react-router-dom";
 
 interface IProps {
   podcastId: string | undefined;
